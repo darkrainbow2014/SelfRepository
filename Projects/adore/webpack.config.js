@@ -5,12 +5,16 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const developServerStarted = process.env.WEBPACK_SERVE;
+
 module.exports = {
-    mode: 'development',
-    entry: ['./src/index.tsx'],
+    mode: developServerStarted ? 'development' : 'production',
+    entry: {
+        main: './src/index.tsx'
+    },
     output: {
-        filename: 'bundle.js',
-        path: __dirname + '/dist',
+        filename: '[name].js',
+        path: __dirname + '/dist/',
         library: 'adore'
     },
 
@@ -38,7 +42,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    // 'style-loader',
+                    'css-hot-loader',
                     MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
@@ -60,7 +64,7 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new MiniCssExtractPlugin({
-            filename: 'bundle.css'
+            filename: 'style.css'
         }),
         new HtmlWebpackPlugin({
             title: 'Adore Single Page Application',
@@ -76,7 +80,9 @@ module.exports = {
                     chunks: 'all',
                     enforce: true
                 }
-            }
+            },
+            name: 'dep',
+            chunks: 'all'
         },
         minimizer: [
             new UglifyJsPlugin({
