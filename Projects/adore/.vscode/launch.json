@@ -8,7 +8,9 @@
             "type": "chrome",
             "request": "launch",
             "name": "启动 Chrome 并打开 localhost",
-            "file": "${workspaceFolder}/dist/index.html"
+            "file": "${workspaceFolder}/dist/index.html",
+            "sourceMaps": true,
+            "webRoot": "${workspaceFolder}/"
         }
     ]
 }
