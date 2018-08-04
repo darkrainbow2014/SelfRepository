@@ -1,0 +1,31 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+}
+
+.custom-table {
+    $borderColor: gray;
+    width: 100%;
+    border: 1px solid $borderColor;
+    tr th,
+    tr td {
+        border: 1px solid $borderColor;
+    }
+    &>tr {
+        &:nth-of-type(odd) {
+            background-color: #EEF7EC;
+        }
+        &:nth-of-type(even) {
+            background-color: white;
+        }
+        &>td {
+            &:nth-of-type(1) {
+                text-align: right;
+            }
+            &:nth-of-type(2) {
+                text-align: left;
+            }
+        }
+    }
+}
