@@ -5,10 +5,8 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const developServerStarted = process.env.WEBPACK_SERVE;
-
-module.exports = {
-    mode: developServerStarted ? 'development' : 'production',
+let defaultConfig = {
+    mode: 'development',
     entry: {
         main: './src/index.tsx'
     },
@@ -17,19 +15,15 @@ module.exports = {
         path: __dirname + '/dist/',
         library: 'adore'
     },
-
-    // Enable sourcemaps for debugging webpack's output.
     devtool: 'source-map',
-
     resolve: {
-        // Add '.ts' and '.tsx' as resolvable extensions.
         extensions: ['.ts', '.tsx', '.js', '.json']
     },
-
+    watchOptions: {
+        ignored: /node_modules/
+    },
     module: {
-        rules: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            {
+        rules: [{
                 test: /\.tsx?$/,
                 loader: 'awesome-typescript-loader'
             },
@@ -42,7 +36,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    'css-hot-loader',
+                    // 'css-hot-loader',
                     MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
@@ -101,4 +95,13 @@ module.exports = {
         'react': 'React',
         'react-dom': 'ReactDOM'
     }
+};
+
+
+module.exports = (env, argv) => {
+    const isDevelopmentMode = argv.mode === 'development';
+
+    defaultConfig.devtool = isDevelopmentMode ? 'source-map' : 'none';
+
+    return defaultConfig;
 };
