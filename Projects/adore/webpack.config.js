@@ -6,13 +6,15 @@ const CopyWebpackPlugin = require("copy-webpack-plugin"); //copy assest to the d
 const HtmlWebpackPlugin = require("html-webpack-plugin"); // write reference path to the distributing .html file
 const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin"); //for add assest to .html file
 
+const useDevelopmentServer = process.env.WEBPACK_SERVE;
+
 let defaultConfig = {
     mode: "development",
     entry: {
         main: "./src/index.tsx"
     },
     output: {
-        filename: "[name].[hash].js",
+        filename: "[name].js",
         path: __dirname + "/dist/",
         library: "adore",
         hashDigestLength: 8
@@ -37,8 +39,7 @@ let defaultConfig = {
             }, {
                 test: /\.scss$/,
                 use: [
-                    // "css-hot-loader",
-                    MiniCssExtractPlugin.loader,
+                    useDevelopmentServer ? "style-loader" : MiniCssExtractPlugin.loader,
                     {
                         loader: "css-loader",
                         options: {
@@ -57,10 +58,7 @@ let defaultConfig = {
         ],
     },
     plugins: [
-        new CleanWebpackPlugin(["dist"]),
-        new MiniCssExtractPlugin({
-            filename: "style.[hash].css"
-        })
+        new CleanWebpackPlugin(["dist"])
     ],
     optimization: {
         splitChunks: {
@@ -91,11 +89,17 @@ let defaultConfig = {
 };
 
 module.exports = (env, argv) => {
-    const useDevelopmentServer = process.env.WEBPACK_SERVE;
-    const isDevelopmentMode = useDevelopmentServer || argv.mode !== "production";
+    const isDevelopmentMode = useDevelopmentServer;
     const mode = isDevelopmentMode ? "development" : "production";
 
-    defaultConfig.devtool = isDevelopmentMode ? "source-map" : "none";
+    if (!isDevelopmentMode) {
+        defaultConfig.output.filename = "[name].[contentHash].js";
+        defaultConfig.devtool = "none";
+    }
+
+    const minimizeCssPlugin = new MiniCssExtractPlugin({
+        filename: "style" + (isDevelopmentMode ? "" : "[contentHash]") + ".css"
+    });
 
     const copyLibPlugin = new CopyWebpackPlugin([{
         from: "lib/hash/@(commons|" + mode + ")/**/*.js",
@@ -133,7 +137,7 @@ module.exports = (env, argv) => {
         append: false
     });
 
-    defaultConfig.plugins.push(copyLibPlugin, generateHtmlPlugin, appendAssetPlugin);
+    defaultConfig.plugins.push(minimizeCssPlugin, copyLibPlugin, generateHtmlPlugin, appendAssetPlugin);
 
     return defaultConfig;
 };

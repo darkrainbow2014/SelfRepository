@@ -24,18 +24,8 @@ gulp.task("createHashLib", ["cleanHashLib"], () => {
         .pipe(gulp.dest('lib/hash'));
 });
 
-gulp.task("build:dev", ["createHashLib"], () => {
-    return run("webpack --mode=development").exec();
-});
-
 gulp.task("build:prod", ["createHashLib"], () => {
     return run("webpack --mode=production").exec();
 });
-
-//这东西推荐用npm启用,利用gulp执行时控制台无交互信息输出
-gulp.task("dev:serve", ["createHashLib"], () => {
-    return run("webpack-serve").exec();
-});
-
 
 gulp.task("default", ["createHashLib"]);
