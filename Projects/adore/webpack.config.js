@@ -1,9 +1,10 @@
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin'); //for minimize js
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin'); //minimize js
+const MiniCssExtractPlugin = require('mini-css-extract-plugin'); //extract style snippets into .css file
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'); //minimize css
+const CleanWebpackPlugin = require('clean-webpack-plugin'); //clean pre-build generating resources when start building
+const HtmlWebpackPlugin = require('html-webpack-plugin'); // write reference path to the distributing .html file
+const CopyWebpackPlugin = require('copy-webpack-plugin'); //copy assest to the distributing .html file
 
 let defaultConfig = {
     mode: 'development',
@@ -11,7 +12,7 @@ let defaultConfig = {
         main: './src/index.tsx'
     },
     output: {
-        filename: '[name].js',
+        filename: '[name].[hash].js',
         path: __dirname + '/dist/',
         library: 'adore'
     },
@@ -58,7 +59,7 @@ let defaultConfig = {
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new MiniCssExtractPlugin({
-            filename: 'style.css'
+            filename: 'style.[hash].css'
         }),
         new HtmlWebpackPlugin({
             title: 'Adore Single Page Application',
@@ -87,21 +88,27 @@ let defaultConfig = {
             new OptimizeCSSAssetsPlugin({})
         ]
     },
-    // When importing a module whose path matches one of the following, just
-    // assume a corresponding global variable exists and use that instead.
-    // This is important because it allows us to avoid bundling all of our
-    // dependencies, which allows browsers to cache those libraries between builds.
     externals: {
         'react': 'React',
         'react-dom': 'ReactDOM'
     }
 };
 
-
 module.exports = (env, argv) => {
     const isDevelopmentMode = argv.mode === 'development';
 
     defaultConfig.devtool = isDevelopmentMode ? 'source-map' : 'none';
+
+    const copyLibPlugin = new CopyWebpackPlugin([{
+        from: 'lib/@(commons|' + argv.mode + ')/**/*.js',
+        to: 'dist/script/[name].[hash].[ext]',
+        toType: 'template'
+    }, {
+        from: 'lib/@(commons|' + argv.mode + ')/**/*.css',
+        to: 'dist/script/[name].[hash].[ext]',
+        toType: 'template'
+    }]);
+    defaultConfig.plugins.push(copyLibPlugin);
 
     return defaultConfig;
 };
