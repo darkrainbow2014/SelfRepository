@@ -4,10 +4,20 @@
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [{
-        "type": "chrome",
-        "request": "attach",
-        "name": "Attach to Chrome",
-        "port": 9222,
-        "webRoot": "${workspaceFolder}/dist"
-    }]
+            "type": "chrome",
+            "request": "attach",
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "webRoot": "${workspaceFolder}/dist"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome and open localhost",
+            "file": "${workspaceFolder}/dist/index.html",
+            "sourceMaps": true,
+            "webRoot": "${workspaceFolder}/",
+            "breakOnLoad": true
+        }
+    ]
 }
