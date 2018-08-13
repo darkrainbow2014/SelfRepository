@@ -16,8 +16,9 @@
             "name": "Launch Chrome and open localhost",
             "file": "${workspaceFolder}/dist/index.html",
             "sourceMaps": true,
-            "webRoot": "${workspaceFolder}/",
-            "breakOnLoad": true
+            "webRoot": "${workspaceFolder}/dist",
+            "breakOnLoad": true,
+            "port": 9223
         }
     ]
 }
