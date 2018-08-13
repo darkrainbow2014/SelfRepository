@@ -25,7 +25,11 @@ gulp.task("createHashLib", ["cleanHashLib"], () => {
 });
 
 gulp.task("build:prod", ["createHashLib"], () => {
-    return run("webpack --mode=production").exec();
+    return run("webpack --config ./webpackConfig/webpack.config.prod.js").exec();
+});
+
+gulp.task("dev:serve", ["createHashLib"], () => {
+    return run("webpack-serve --open --config ./webpackConfig/webpack.config.dev.js").exec();
 });
 
 gulp.task("default", ["createHashLib"]);

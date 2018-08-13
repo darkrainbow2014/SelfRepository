@@ -1,8 +1,8 @@
 //此webpack config用于快速开发环境
 const basicConfig = require("./webpack.config.basic");
 const combineConfig = require("./combineConfig");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //extract style snippets into .css file//clean pre-build generating resources when start building
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //extract style snippets into .css file
+const CopyWebpackPlugin = require("copy-webpack-plugin"); //for resource copy
 const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin"); //for add assest to .html file
 
 const baseScriptLib = ["react"];

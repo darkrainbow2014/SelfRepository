@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:serve": "webpack-serve --open"
+    "build:prod": "webpack --config ./webpackConfig/webpack.config.prod.js",
+    "dev:serve": "webpack-serve --open --config ./webpackConfig/webpack.config.dev.js"
   },
   "keywords": [],
   "author": "",
