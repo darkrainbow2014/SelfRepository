@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:prod": "webpack --config ./webpackConfig/webpack.config.prod.js",
+    "build:dev": "webpack --config ./webpackConfig/webpack.config.dev.js",
     "dev:serve": "webpack-serve --open --config ./webpackConfig/webpack.config.dev.js"
   },
   "keywords": [],
