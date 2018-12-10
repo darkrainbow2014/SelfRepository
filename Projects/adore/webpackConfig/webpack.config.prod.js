@@ -14,7 +14,7 @@ config = {
         main: "./src/index.tsx"
     },
     output: {
-        filename: "[name].[contentHash].js",
+        filename: "[name].js",
     },
     devtool: "none",
     module: {
@@ -40,14 +40,14 @@ config = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "style.[contentHash].css"
+            filename: "style.css"
         }),
         new CopyWebpackPlugin([{
-            from: "lib/hash/@(commons|production)/**/*.js",
+            from: "lib/src/@(commons|production)/**/*.js",
             to: "lib/script/[name].[ext]",
             toType: "template"
         }, {
-            from: "lib/hash/@(commons|production)/**/*.css",
+            from: "lib/src/@(commons|production)/**/*.css",
             to: "lib/style/[name].[ext]",
             toType: "template"
         }]),
@@ -55,17 +55,17 @@ config = {
             assets: [{
                 path: "lib/script",
                 glob: "*@(" + glob + ")*.js",
-                globPath: "lib/hash/production/script/",
+                globPath: "lib/src/production/script/",
                 append: false
             }, {
                 path: "lib/script",
                 glob: "*.js",
-                globPath: "lib/hash/production/script/",
+                globPath: "lib/src/production/script/",
                 append: true
             }, {
                 path: "lib/style",
                 glob: "*.css",
-                globPath: "lib/hash/production/style/"
+                globPath: "lib/src/production/style/"
             }],
             append: false
         })

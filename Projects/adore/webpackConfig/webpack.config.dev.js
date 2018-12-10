@@ -43,11 +43,11 @@ const config = {
             filename: "style.css"
         }),
         new CopyWebpackPlugin([{
-            from: "lib/hash/@(commons|development)/**/*.js",
+            from: "lib/src/@(commons|development)/**/*.js",
             to: "lib/script/[name].[ext]",
             toType: "template"
         }, {
-            from: "lib/hash/@(commons|development)/**/*.css",
+            from: "lib/src/@(commons|development)/**/*.css",
             to: "lib/style/[name].[ext]",
             toType: "template"
         }]),
@@ -55,17 +55,17 @@ const config = {
             assets: [{
                 path: "lib/script",
                 glob: "*@(" + glob + ")*.js",
-                globPath: "lib/hash/development/script/",
+                globPath: "lib/src/development/script/",
                 append: false
             }, {
                 path: "lib/script",
                 glob: "*.js",
-                globPath: "lib/hash/development/script/",
+                globPath: "lib/src/development/script/",
                 append: true
             }, {
                 path: "lib/style",
                 glob: "*.css",
-                globPath: "lib/hash/development/style/"
+                globPath: "lib/src/development/style/"
             }],
             append: false
         })
